@@ -9,12 +9,7 @@ import Balance from "./components/Balance.js"
 
 function App(){
 
-  //const [info, setInfo] = useState({});
-  //const [per, setPer] = useState('')
-  //const contextValue = {info, setInfo, per, setPer}
-
   return (
-    //<UserContext.Provider value={contextValue}>
       <BrowserRouter>
         <Routes>
             <Route path='/' element={<Login/>}/>
@@ -25,7 +20,6 @@ function App(){
             <Route path='/balance' element={<Balance/>}/>
         </Routes>
       </BrowserRouter>
-    //</UserContext.Provider>
   )
 }
 
