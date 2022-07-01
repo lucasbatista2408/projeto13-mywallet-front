@@ -5,7 +5,6 @@ import Cadastro from "./components/Cadastro.js"
 import Home from "./components/Home.js"
 import Credit from "./components/Credit.js"
 import Debit from "./components/Debit.js"
-import Balance from "./components/Balance.js"
 
 function App(){
 
@@ -17,7 +16,6 @@ function App(){
             <Route path='/home' element={<Home />}/>
             <Route path='/credit' element={<Credit />}/>
             <Route path='/debit' element={<Debit/>}/>
-            <Route path='/balance' element={<Balance/>}/>
         </Routes>
       </BrowserRouter>
   )

@@ -9,8 +9,13 @@ function Cadastro(){
     email: '',
     password: '',
     name: '',
-    image: ''
   })
+
+  const [pass, setPass] = useState('');
+
+  console.log(form.email)
+  console.log(pass)
+
   const [popup, setPopup] = useState(false)
 
   const navigate = useNavigate();
@@ -18,8 +23,9 @@ function Cadastro(){
   function SignUp(e){
     e.preventDefault();
     setPopup(true)
+    console.log('clicked')
 
-    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up"
+    const URL = ""
     const signUp = form;
     const promise = axios.post(URL, signUp)
     promise
@@ -35,6 +41,13 @@ function Cadastro(){
       ))
   }
 
+  function HandleConfirmation(e){
+    setPass(e.target.value)
+
+    if(pass === form.password){
+      
+    }
+  }
 
   function HandleLogIn(){
     navigate('/')
@@ -46,11 +59,11 @@ function Cadastro(){
       <h1> MyWallet </h1>
     </Logo>
     <Form>
-      <input type="text" placeholder="Nome" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required />
-      <input type="text" placeholder="E-mail" value={form.password} onChange={e => setForm({...form, password: e.target.value})} required/>
-      <input type="password" placeholder="Senha"  value={form.name} onChange={e => setForm({...form, name: e.target.value})} required/>
-      <input type="password" placeholder="Confirmar Senha"  value={form.image} onChange={e => setForm({...form, image: e.target.value})} required/>
-      <button onClick={SignUp}>Cadastrar</button>
+      <input type="text" placeholder="Nome" value={form.name} onChange={e => setForm({...form, name: e.target.value})} required />
+      <input type="text" placeholder="E-mail" value={form.email} onChange={e => setForm({...form, email: e.target.value})} required/>
+      <input type="password" placeholder="Senha"  value={form.password} onChange={e => setForm({...form, password: e.target.value})} required/>
+      <input type="password" placeholder="Confirmar Senha"  value={pass} onChange={e => HandleConfirmation(e)} required/>
+      <button onClick={SignUp} disabled>Cadastrar</button>
     </Form>
     <Button onClick={HandleLogIn}>Ja tem uma conta? Entre agora!</Button>
 </SignIn>
