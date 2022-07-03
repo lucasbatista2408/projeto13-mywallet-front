@@ -1,12 +1,55 @@
 import styled from "styled-components"
-import React, {useState} from "react"
+import React, {useContext, useState, useEffect} from "react"
 import {useNavigate} from "react-router-dom"
 import axios from "axios"
+import UserContext from "../contexts/UserContext";
 
 
 export default function Home(){
 
+  const { info } = useContext(UserContext);
+  const [list, setList] = useState('')
+  console.log(info)
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axiosRequest()
+  }, [])
+
+  function axiosRequest(){
+    const token = info;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}` //Padrão da API (Bearer Authentication)
+      }
+    }
+    const promise = axios.get("http://localhost:5000/balance", config)
+    promise.then(res => {
+      setList(res.data)
+      console.log(res.data)
+    })
+  }
+
+  console.log(list)
+
+  // function RenderBalance(list){
+  //   console.log(list)
+  //   return list.map((move) => {
+  //     return (
+  //         <Balance>
+  //             <p>{move.date}</p>
+  //             <p>{move.description}</p>
+  //             {move.type === "credit" ? (
+  //                 <p style={{ color: "green" }}>{move.amount}</p>
+  //             ) : (
+  //                 <p style={{ color: "red" }}>{move.amount}</p>
+  //             )}
+  //         </Balance>
+  //     );
+  // }
+  // )
+  // }
 
   function HandleClickAdd(){
     navigate ('/credit')
@@ -27,7 +70,19 @@ export default function Home(){
         <ion-icon onClick={HandleLogOut} name="exit-outline"></ion-icon>
       </UserAndOut>
       <Registry>
-        <h1>Não há registros de <br/> entrada ou saida</h1>
+      {list.length === 0 ? <h1>Não há registros de <br/> entrada ou saida</h1> 
+      :
+      list.map((move) =>
+        <Balance>
+          <p>{move.date}</p>
+          <p>{move.description}</p>
+          {move.type === "credit" ? (
+              <p style={{ color: "green" }}>{move.amount}</p>
+          ) : (
+              <p style={{ color: "red" }}>{move.amount}</p>
+          )}
+        </Balance>
+      )}
       </Registry>
       <Bottom>
         <AddButton onClick={HandleClickAdd} >
@@ -140,5 +195,11 @@ const RemoveButton = styled.div`
   ion-icon{
     font-size: 1.375rem;
     color: white;
+  }
+`
+
+const Balance = styled.div`
+  p{
+    font-family: 'Raleway', sans-serif;
   }
 `

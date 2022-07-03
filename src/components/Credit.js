@@ -3,38 +3,35 @@ import React, {useState} from "react"
 import {useNavigate} from "react-router-dom"
 import axios from "axios"
 import { useContext } from "react";
+import UserContext from "../contexts/UserContext";
 
 export default function Credit(){
-  
-  //const { info, setInfo } = useContext(UserContext);
-
-  const[form, setForm] = useState({
-    email: '',
-    password: ''
-  })
 
   const navigate = useNavigate();
+  
+  const { info, setInfo } = useContext(UserContext);
+  console.log(info)
 
-  function HandleLogIn(e){
-    e.preventDefault();
-    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
-    const infoLogIn = form;
-    const promise = axios.post(URL, infoLogIn)
-    promise.then(res => { 
-      const dados = res.data;
-      //setInfo(dados)
-      navigate('/hoje')}
-      )
+  const[form, setForm] = useState({
+    amount: '',
+    description: ''
+  })
 
-    promise.catch(error => (
-      alert("As informações digitadas estão incorretas"),
-      window.location.reload(true)
-      ))
+  function axiosPost(){
+    const token = info;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}` //Padrão da API (Bearer Authentication)
+      }
+    }
+    const promise = axios.post("http://localhost:5000/credit", form, config)
+    promise.then(res => {
+      alert("inserido com sucesso")
+      navigate('/home')
+    })
   }
 
-  function HandleClick(){
-    navigate("/cadastro")
-  }
+  
 
   return( 
     <LoginPage>
@@ -42,9 +39,9 @@ export default function Credit(){
       <h1>Nova entrada</h1>
     </Header>
       <Form>
-        <input type="number" value={form.email} placeholder='Valor' onChange={e => setForm({...form, email: e.target.value})} required/>
-        <input type="text" value={form.password} placeholder='Descrição' onChange={e => setForm({...form, password: e.target.value})} required/>
-        <button onClick={HandleLogIn} type="submit">Salvar entrada</button>
+        <input type="number" value={form.amount} placeholder='Valor' onChange={e => setForm({...form, amount: e.target.value})} required/>
+        <input type="text" value={form.description} placeholder='Descrição' onChange={e => setForm({...form, description: e.target.value})} required/>
+        <button onClick={axiosPost} type="submit">Salvar entrada</button>
       </Form>
     </LoginPage>
   )

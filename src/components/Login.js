@@ -3,27 +3,31 @@ import React, {useState} from "react"
 import {useNavigate} from "react-router-dom"
 import axios from "axios"
 import { useContext } from "react";
+import UserContext from "../contexts/UserContext";
 
 export default function Login(){
   
-  //const { info, setInfo } = useContext(UserContext);
+  const { info, setInfo } = useContext(UserContext);
 
   const[form, setForm] = useState({
     email: '',
     password: ''
   })
 
+  console.log(form)
+
   const navigate = useNavigate();
 
   function HandleLogIn(e){
     e.preventDefault();
-    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
+    const URL = "http://localhost:5000/login"
     const infoLogIn = form;
     const promise = axios.post(URL, infoLogIn)
     promise.then(res => { 
       const dados = res.data;
-      //setInfo(dados)
-      navigate('/hoje')}
+      setInfo(dados)
+      console.log(dados)
+      navigate('/home')}
       )
 
     promise.catch(error => (
