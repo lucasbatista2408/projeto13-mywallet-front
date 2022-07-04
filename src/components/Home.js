@@ -18,7 +18,7 @@ export default function Home(){
   }, [])
 
   function axiosRequest(){
-    const token = info;
+    const token = info.token;
     const config = {
       headers: {
         Authorization: `Bearer ${token}` //Padrão da API (Bearer Authentication)
@@ -33,23 +33,23 @@ export default function Home(){
 
   console.log(list)
 
-  // function RenderBalance(list){
-  //   console.log(list)
-  //   return list.map((move) => {
-  //     return (
-  //         <Balance>
-  //             <p>{move.date}</p>
-  //             <p>{move.description}</p>
-  //             {move.type === "credit" ? (
-  //                 <p style={{ color: "green" }}>{move.amount}</p>
-  //             ) : (
-  //                 <p style={{ color: "red" }}>{move.amount}</p>
-  //             )}
-  //         </Balance>
-  //     );
-  // }
-  // )
-  // }
+  function saldoTotal(list) {
+    let saldo = 0;
+    list.map(move => {
+        if (move.type === "credit") {
+            saldo += parseFloat(move.amount);
+        } else {
+            saldo -= parseFloat(-(move.amount));
+        }
+    })
+    return(<>{
+        saldo > 0 ? (
+            <p style={{ color: "green" }}>{saldo.toFixed(2)}</p>
+        ):(
+            <p style={{ color: "red" }}>{saldo.toFixed(2)}</p>
+        )
+    }</>);
+    }
 
   function HandleClickAdd(){
     navigate ('/credit')
@@ -66,24 +66,34 @@ export default function Home(){
   return(
     <HomePage>
       <UserAndOut>
-        <h1>Olá, Fulano!</h1>
+        <h1>Olá, {info.user}!</h1>
         <ion-icon onClick={HandleLogOut} name="exit-outline"></ion-icon>
       </UserAndOut>
+      {list.length === 0 ? 
       <Registry>
-      {list.length === 0 ? <h1>Não há registros de <br/> entrada ou saida</h1> 
+        <h1>Não há registros de <br/> entrada ou saida</h1>
+      </Registry> 
       :
-      list.map((move) =>
+      <BalanceContent>
         <Balance>
-          <p>{move.date}</p>
-          <p>{move.description}</p>
-          {move.type === "credit" ? (
-              <p style={{ color: "green" }}>{move.amount}</p>
-          ) : (
-              <p style={{ color: "red" }}>{move.amount}</p>
-          )}
+          {list.map((move) =>
+              <Move>
+                <p>{move.date}</p>
+                <p>{move.description}</p>
+                {move.type === "credit" ? (
+                    <p style={{ color: "green" }}>{(move.amount)}</p>
+                ) : (
+                    <p style={{ color: "red" }}>{(move.amount)}</p>
+                )}
+              </Move>
+          )} 
         </Balance>
-      )}
-      </Registry>
+      <Saldo>
+        <p>Saldo</p>
+        <p>{saldoTotal(list)}</p>
+      </Saldo>
+      </BalanceContent>
+      }
       <Bottom>
         <AddButton onClick={HandleClickAdd} >
           <ion-icon name="add-circle-outline"></ion-icon>
@@ -198,8 +208,65 @@ const RemoveButton = styled.div`
   }
 `
 
+const BalanceContent = styled.div`
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 90%;
+  height: 400px;
+  border-radius: 6px;
+  overflow-y: scroll;
+  background-color: white;
+`
+
 const Balance = styled.div`
+
+`
+
+const Move = styled.div`
+  margin: 0 auto;
+  margin-top: 6px;
+  width: 90%;
+  font-family: 'Raleway', sans-serif;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
   p{
-    font-family: 'Raleway', sans-serif;
+    width: 145px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #000;  
+  }
+  p:first-child{
+    width: 48px;
+    color: #c6c6c6;  
+  }
+  p:last-child{
+    width: 62px;
+    color: green;
+    text-align: end;    
+  }
+`
+
+const Saldo = styled.div`
+  margin: 0 auto;
+  margin-bottom: 6px;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: 'Raleway', sans-serif;
+
+  p:first-child{
+    font-size: 17px;
+    font-weight: 700;
+    color: black;
+  }
+  p:last-child{
+    font-size: 17px;
+    font-weight: 400;
   }
 `

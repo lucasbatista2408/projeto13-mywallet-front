@@ -3,37 +3,32 @@ import React, {useState} from "react"
 import {useNavigate} from "react-router-dom"
 import axios from "axios"
 import { useContext } from "react";
+import UserContext from "../contexts/UserContext";
 
 export default function Debit(){
   
-  //const { info, setInfo } = useContext(UserContext);
+  const navigate = useNavigate();
+  
+  const { info, setInfo } = useContext(UserContext);
+  console.log(info)
 
   const[form, setForm] = useState({
-    email: '',
-    password: ''
+    amount: '',
+    description: ''
   })
 
-  const navigate = useNavigate();
-
-  function HandleLogIn(e){
-    e.preventDefault();
-    const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login"
-    const infoLogIn = form;
-    const promise = axios.post(URL, infoLogIn)
-    promise.then(res => { 
-      const dados = res.data;
-      //setInfo(dados)
-      navigate('/hoje')}
-      )
-
-    promise.catch(error => (
-      alert("As informações digitadas estão incorretas"),
-      window.location.reload(true)
-      ))
-  }
-
-  function HandleClick(){
-    navigate("/cadastro")
+  function axiosPost(){
+    const token = info.token;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}` //Padrão da API (Bearer Authentication)
+      }
+    }
+    const promise = axios.post("http://localhost:5000/debit", form, config)
+    promise.then(res => {
+      alert("inserido com sucesso")
+      navigate('/home')
+    })
   }
 
   return( 
@@ -42,10 +37,10 @@ export default function Debit(){
       <h1>Nova Saída</h1>
     </Header>
       <Form>
-        <input type="number" value={form.email} placeholder='Valor' onChange={e => setForm({...form, email: e.target.value})} required/>
-        <input type="text" value={form.password} placeholder='Descrição' onChange={e => setForm({...form, password: e.target.value})} required/>
-        <button onClick={HandleLogIn} type="submit">Salvar saída</button>
+        <input type="number" value={form.amount} placeholder='Valor' onChange={e => setForm({...form, amount: e.target.value})} required/>
+        <input type="text" value={form.description} placeholder='Descrição' onChange={e => setForm({...form, description: e.target.value})} required/>
       </Form>
+      <button onClick={axiosPost}>Salvar saída</button>
     </LoginPage>
   )
 }
@@ -59,8 +54,18 @@ const LoginPage = styled.div`
   flex-direction: column;
   background-color: purple;
 
-  img{
-    margin-bottom: 32px;
+  button{
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-family: 'Raleway', sans-serif;
+    margin-top: 6px;
+    margin: 0 auto;
+    width: 326px;
+    height: 46px;
+    border: none;
+    border-radius: 6px;
+    background-color: #A328D6;
+    color: ${props => props.loading ? "#F2F2F2F" : "#FFFFFF"};
   }
 `
 
@@ -102,16 +107,4 @@ const Form = styled.form`
   }
 }
 
-  button{
-    font-size: 1.25rem;
-    font-weight: 700;
-    font-family: 'Raleway', sans-serif;
-    margin-top: 6px;
-    width: 326px;
-    height: 46px;
-    border: none;
-    border-radius: 6px;
-    background-color: #A328D6;
-    color: ${props => props.loading ? "#F2F2F2F" : "#FFFFFF"};
-  }
 `

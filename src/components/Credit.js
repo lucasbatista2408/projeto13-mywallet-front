@@ -18,7 +18,7 @@ export default function Credit(){
   })
 
   function axiosPost(){
-    const token = info;
+    const token = info.token;
     const config = {
       headers: {
         Authorization: `Bearer ${token}` //Padrão da API (Bearer Authentication)
@@ -27,7 +27,7 @@ export default function Credit(){
     const promise = axios.post("http://localhost:5000/credit", form, config)
     promise.then(res => {
       alert("inserido com sucesso")
-      navigate('/home')
+      navigate("/home")
     })
   }
 
@@ -41,8 +41,8 @@ export default function Credit(){
       <Form>
         <input type="number" value={form.amount} placeholder='Valor' onChange={e => setForm({...form, amount: e.target.value})} required/>
         <input type="text" value={form.description} placeholder='Descrição' onChange={e => setForm({...form, description: e.target.value})} required/>
-        <button onClick={axiosPost} type="submit">Salvar entrada</button>
       </Form>
+      <button onClick={axiosPost}>Salvar entrada</button>
     </LoginPage>
   )
 }
@@ -56,8 +56,18 @@ const LoginPage = styled.div`
   flex-direction: column;
   background-color: purple;
 
-  img{
-    margin-bottom: 32px;
+  button{
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-family: 'Raleway', sans-serif;
+    margin-top: 6px;
+    margin: 0 auto;
+    width: 326px;
+    height: 46px;
+    border: none;
+    border-radius: 6px;
+    background-color: #A328D6;
+    color: ${props => props.loading ? "#F2F2F2F" : "#FFFFFF"};
   }
 `
 
@@ -99,16 +109,5 @@ const Form = styled.form`
   }
 }
 
-  button{
-    font-size: 1.25rem;
-    font-weight: 700;
-    font-family: 'Raleway', sans-serif;
-    margin-top: 6px;
-    width: 326px;
-    height: 46px;
-    border: none;
-    border-radius: 6px;
-    background-color: #A328D6;
-    color: ${props => props.loading ? "#F2F2F2F" : "#FFFFFF"};
-  }
+
 `
