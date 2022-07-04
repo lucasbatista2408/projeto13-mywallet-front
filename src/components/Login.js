@@ -20,7 +20,7 @@ export default function Login(){
 
   function HandleLogIn(e){
     e.preventDefault();
-    const URL = "http://localhost:5000/login"
+    const URL = "https://mywallet-backend-lucasb.herokuapp.com/login"
     const infoLogIn = form;
     const promise = axios.post(URL, infoLogIn)
     promise.then(res => { 

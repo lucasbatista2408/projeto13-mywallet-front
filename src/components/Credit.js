@@ -24,7 +24,7 @@ export default function Credit(){
         Authorization: `Bearer ${token}` //Padrão da API (Bearer Authentication)
       }
     }
-    const promise = axios.post("http://localhost:5000/credit", form, config)
+    const promise = axios.post("https://mywallet-backend-lucasb.herokuapp.com/credit", form, config)
     promise.then(res => {
       alert("inserido com sucesso")
       navigate("/home")

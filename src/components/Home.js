@@ -24,7 +24,7 @@ export default function Home(){
         Authorization: `Bearer ${token}` //Padrão da API (Bearer Authentication)
       }
     }
-    const promise = axios.get("http://localhost:5000/balance", config)
+    const promise = axios.get("https://mywallet-backend-lucasb.herokuapp.com/balance", config)
     promise.then(res => {
       setList(res.data)
       console.log(res.data)

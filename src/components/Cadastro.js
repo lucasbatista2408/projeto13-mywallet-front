@@ -22,7 +22,7 @@ function Cadastro(){
     e.preventDefault();
     console.log('clicked')
 
-    const URL = "http://localhost:5000/signup"
+    const URL = "https://mywallet-backend-lucasb.herokuapp.com/signup"
     const signUp = form;
     const promise = axios.post(URL, signUp)
     promise

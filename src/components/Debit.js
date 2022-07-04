@@ -24,7 +24,7 @@ export default function Debit(){
         Authorization: `Bearer ${token}` //Padrão da API (Bearer Authentication)
       }
     }
-    const promise = axios.post("http://localhost:5000/debit", form, config)
+    const promise = axios.post("https://mywallet-backend-lucasb.herokuapp.com/debit", form, config)
     promise.then(res => {
       alert("inserido com sucesso")
       navigate('/home')
